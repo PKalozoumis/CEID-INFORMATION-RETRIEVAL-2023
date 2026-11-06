@@ -4,21 +4,21 @@ import colbert_helper
 import metrics
 
 import os
-import shutil
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-n", "--num-results", type=int, action="store", default=20)
+parser.add_argument("--index-first", type=bool, action="store_true", required=True, help="Set to true if ColBERT index doesn't already exist")
+
+args = parser.parse_args()
 
 if __name__ == "__main__":
-
-    #Set to true if ColBERT index doesn't already exist
-    index_first = False
 
     #Initialization
     #==============================================================================================
 
     #Name of the index that ColBERT will use for searching (will be recreated if index_first = True)
     colbert_helper.index_name = "index_1"
-
-    #The number of results you want each search to return
-    num_results = 20
 
     #Determines which implementation of TF-IDF weights is used
     vsm_weighting_method = 0
@@ -32,9 +32,8 @@ if __name__ == "__main__":
     num_queries = queries_dataset.num_rows
     num_docs = docs_dataset.num_rows
 
-    if index_first:
+    if args.index_first:
         colbert_helper.create_index(docs_dataset)
-
 
     #Results path
     os.makedirs("results", exist_ok=True)
@@ -47,7 +46,7 @@ if __name__ == "__main__":
 
     for q in queries_dataset:
 
-        search_results = vsm.search(index, doc_norms, max_doc_freq, q["query"], num_results, vsm_weighting_method)
+        search_results = vsm.search(index, doc_norms, max_doc_freq, q["query"], args.num_results, vsm_weighting_method)
         vsm_results.append(search_results)
 
     #Colbert
@@ -58,7 +57,7 @@ if __name__ == "__main__":
 
     for q in queries_dataset:
 
-        search_results = colbert_helper.search(searcher, docs_dataset, q["query"], num_results)
+        search_results = colbert_helper.search(searcher, docs_dataset, q["query"], args.num_results)
         colbert_results.append(search_results)
 
     #Metrics

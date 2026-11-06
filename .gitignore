@@ -2,3 +2,10 @@ proj
 __pycache__/
 colbertv2.0/
 .vscode/
+*.yml
+ColBERT/
+experiments/
+json_docs
+json_queries
+original_dataset
+test

@@ -3,7 +3,8 @@ A module for preprocessing and loading datasets
 '''
 
 import sys;
-sys.path.insert(0, '/home/zoukos/ceid/Information_Retrieval/ColBERT/')
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent / "ColBERT"))
 
 import json
 import re

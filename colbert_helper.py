@@ -3,7 +3,8 @@ Colbert indexing and searching
 '''
 
 import sys;
-sys.path.insert(0, '/home/zoukos/ceid/Information_Retrieval/ColBERT/')
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent / "ColBERT"))
 
 from colbert import Indexer, Searcher
 from colbert.infra import Run, RunConfig, ColBERTConfig
